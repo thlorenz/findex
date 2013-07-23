@@ -18,6 +18,14 @@ findex(function (err, index) {
 });
 ```
 
+```
+[ { file: '/Users/thlorenz/dev/js/projects/findex/example/indexNfind.js',
+    start: { line: 4, column: 0 },
+    end: { line: 6, column: 1 },
+    lines: 2,
+    range: [ 43, 142 ] } ]
+```
+
 ## Status
 
 Alpha - most functionality is there, none tested yet.
