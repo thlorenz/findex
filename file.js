@@ -23,7 +23,7 @@ function index(indexes, source, fullPath, loc, range) {
 
 function rewriteDec (fn) {
   // toString() on a function converts 'function  foo (..' to 'function foo(..' so we need to do the same
-  return fn.replace(/function +([^ ]+)[^\(]*\(/, 'function $1(');
+  return fn.replace(/function +([^ (]+)[^\(]*\(/, 'function $1(');
 }
 
 function rewriteExp (fn) {
