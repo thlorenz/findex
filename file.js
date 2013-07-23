@@ -11,7 +11,7 @@ function getHash(data) {
     .digest('hex');
 }
 
-function index(indexes, source, loc, range) {
+function index(indexes, source, fullPath, loc, range) {
   var hash  =  getHash(source);
   var locS  =  loc.start;
   var locE  =  loc.end;
@@ -39,7 +39,7 @@ function rewriteExp (fn) {
     : fn.replace(/function[^\(]*\(/, 'function (');
 }
 
-function locateNindex (indexes, ranges, locs, areDecs) {
+function locateNindex (indexes, js, fullPath, ranges, locs, areDecs) {
   ranges.forEach(function (range, idx) {
     var start =  range[0];
     var end   =  range[1];
@@ -50,7 +50,7 @@ function locateNindex (indexes, ranges, locs, areDecs) {
 
     var fn = js.slice(start, end);
     var source = areDecs ? rewriteDec(fn) : rewriteExp(fn);
-    index(indexes, source, loc, range);
+    index(indexes, source, fullPath, loc, range);
   });
 }
 
@@ -75,8 +75,8 @@ var go = module.exports = function (js, fullPath, indexes) {
   var expRanges = select.match('.type:val("FunctionExpression") ~ .range', ast)
   var expLocs = select.match('.type:val("FunctionExpression") ~ .loc', ast);
 
-  locateNindex(indexes, decRanges, decLocs, true);
-  locateNindex(indexes, expRanges, expLocs, false);
+  locateNindex(indexes, js, fullPath, decRanges, decLocs, true);
+  locateNindex(indexes, js, fullPath, expRanges, expLocs, false);
 
   return indexes;
 };
