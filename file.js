@@ -78,6 +78,12 @@ var go = module.exports = function (js, fullPath, indexes) {
   locateNindex(indexes, js, fullPath, decRanges, decLocs, true);
   locateNindex(indexes, js, fullPath, expRanges, expLocs, false);
 
+  if (!indexes.find) indexes.find = function (fn) {
+    var s = typeof fn === 'function' ? fn.toString() : fn;
+    var hash = getHash(s);
+    return indexes[hash];
+  };
+
   return indexes;
 };
 
