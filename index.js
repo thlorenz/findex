@@ -1,59 +1,48 @@
 'use strict';
 
-var esprima = require('esprima');
-var select = require('JSONSelect');
-var crypto = require('crypto');
+var fs = require('fs');
+var readdirp = require('readdirp');
+var through = require('through');
+var file = require('./file');
 
-function getHash(data) {
-  return crypto
-    .createHash('md5')
-    .update(data)
-    .digest('hex');
-}
+var go = module.exports = function (opts, cb) {
+  if (typeof opts === 'function') {
+    cb = opts;
+    opts = null;
+  }
 
-function rewrite (fn) {
-  // toString() on a function converts 'function  foo (..' to 'function foo(..' so we need to do the same
-  return fn.replace(/function +([^ ]+)[^\(]*\(/, 'function $1(');
-}
+  opts = opts || {};
+  opts.root            =  opts.root            || process.cwd();
+  opts.fileFilter      =  opts.fileFilter      || '*.js';
+  opts.directoryFilter =  opts.directoryFilter || [ '!.git', '!.svn', '!node_modules' ];
 
-var go = module.exports = function (file) {
+  var indexes = {};
 
+  function ondata (entry) {
+    fs.readFile(entry.fullPath, 'utf8', function (err, js) {
+      if (err) return cb(err);
+      file(js, entry.fullPath, indexes);
+      this.queue(null);
+    }.bind(this));
+  }
+
+  function onend () {
+    cb(null, indexes);
+    this.queue(null);
+  }
+
+  readdirp(opts).pipe(through(ondata, onend));
 };
 
+function inspect(obj, depth) {
+  console.log(require('util').inspect(obj, false, depth || 5, true));
+}
 
-var fs = require('fs');
-var p = __dirname + '/test/fixtures/one-root-dec.js';
-var js = fs.readFileSync(p, 'utf8');
-var fn = require(p);
+// Test
+if (!module.parent) {
 
-var ast = esprima.parse(js, { range: true, loc: true });
-
-var ranges = select.match('.type:val("FunctionDeclaration") ~ .range', ast)
-
-var locs = select.match('.type:val("FunctionDeclaration") ~ .loc', ast)
-
-var hashes = {};
-var fullPath = p;
-
-ranges.forEach(function (range, idx) {
-  var start =  range[0];
-  var end   =  range[1];
-
-  var loc   =  locs[idx];
-  var locS  =  loc.start;
-  var locE  =  loc.end;
-
-  var fn = js.slice(start, end - start);
-  var source = rewrite(fn);
-  var hash = getHash(source);
-
-  // the exact same function could exist in multiple files, so we have to store all locations
-  if (!hashes[hash]) hashes[hash] = [];
-  hashes[hash].push({
-      file  :  fullPath
-    , start :  locS
-    , end   :  locE
-    , lines :  locE.line - locS.line
-    , range :  range
+  go(function (err, res) {
+    if (err) return console.error(err);
+    inspect(res);
   });
-});
+}

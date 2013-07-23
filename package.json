@@ -17,7 +17,9 @@
   "homepage": "https://github.com/thlorenz/findex",
   "dependencies": {
     "esprima": "~1.0.3",
-    "JSONSelect": "~0.4.0"
+    "JSONSelect": "~0.4.0",
+    "readdirp": "~0.3.1",
+    "through": "~2.3.4"
   },
   "devDependencies": {
     "nave": "~0.4.3",
