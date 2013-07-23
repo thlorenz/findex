@@ -2,14 +2,8 @@
 
 var esprima = require('esprima');
 var select = require('JSONSelect');
-var crypto = require('crypto');
-
-function getHash(data) {
-  return crypto
-    .createHash('md5')
-    .update(data)
-    .digest('hex');
-}
+var getHash = require('./get-hash');
+var find = require('./find');
 
 function index(indexes, source, fullPath, loc, range) {
   var hash  =  getHash(source);
@@ -78,12 +72,7 @@ var go = module.exports = function (js, fullPath, indexes) {
   locateNindex(indexes, js, fullPath, decRanges, decLocs, true);
   locateNindex(indexes, js, fullPath, expRanges, expLocs, false);
 
-  if (!indexes.find) indexes.find = function (fn) {
-    var s = typeof fn === 'function' ? fn.toString() : fn;
-    var hash = getHash(s);
-    return indexes[hash];
-  };
-
+  if (!indexes.find) indexes.find = find.bind(indexes);
   return indexes;
 };
 

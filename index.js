@@ -4,6 +4,7 @@ var fs = require('fs');
 var readdirp = require('readdirp');
 var through = require('through');
 var file = require('./file');
+var find = require('./find');
 
 /**
  * Indexes all functions found in all files found in all directories and subdirectories of the given root or the working directory.
@@ -28,6 +29,7 @@ var go = module.exports = function (opts, cb) {
   opts.directoryFilter =  opts.directoryFilter || [ '!.git', '!.svn', '!node_modules' ];
 
   var indexes = {};
+  indexes.find = find.bind(indexes);
 
   function ondata (entry) {
     fs.readFile(entry.fullPath, 'utf8', function (err, js) {
