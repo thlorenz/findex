@@ -9,6 +9,5 @@ functionToFind();
 
 findex(function (err, index) {
   if (err) return console.error(err);
-  console.log(index);
   console.log(index.find(functionToFind));
 });
