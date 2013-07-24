@@ -24,3 +24,25 @@ test('\nindexing file with one root expression', function (t) {
   t.ok(index.find(foo));
   t.end();
 })
+
+test('\nindexing file with one root and one nested declaration', function (t) {
+  var src = fs.readFileSync(__dirname + '/fixtures/one-root-one-nested-dec.js', 'utf8');
+  var mod = require('./fixtures/one-root-one-nested-dec');
+
+  var index = indexFile(src);
+
+  t.ok(index.find(mod.foo));
+  t.ok(index.find(mod.bar));
+  t.end();
+})
+
+test('\nindexing file with one root and one nested expression', function (t) {
+  var src = fs.readFileSync(__dirname + '/fixtures/one-root-one-nested-exp.js', 'utf8');
+  var mod = require('./fixtures/one-root-one-nested-exp');
+
+  var index = indexFile(src);
+
+  t.ok(index.find(mod.foo));
+  t.ok(index.find(mod.bar));
+  t.end();
+})
