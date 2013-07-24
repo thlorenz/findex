@@ -14,3 +14,13 @@ test('\nindexing file with one root declaration', function (t) {
   t.ok(index.find(foo));
   t.end();
 })
+
+test('\nindexing file with one root expression', function (t) {
+  var src = fs.readFileSync(__dirname + '/fixtures/one-root-exp.js', 'utf8');
+  var foo = require('./fixtures/one-root-exp');
+
+  var index = indexFile(src);
+
+  t.ok(index.find(foo));
+  t.end();
+})
