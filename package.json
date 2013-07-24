@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Indexes locations of functions inside a project by the checksum of the function string to find them later.",
   "main": "index.js",
+  "browser": "browser.js",
   "scripts": {
     "test-main": "tap test/*.js",
     "test-0.8": "nave use 0.8 npm run test-main",
