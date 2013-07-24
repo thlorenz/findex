@@ -43,6 +43,9 @@
   "engine": {
     "node": ">=0.6"
   },
+  "browserify": {
+    "transform": ["brfs"]
+  },
   "testling": {
     "files": "test/*.js",
     "browsers": [
