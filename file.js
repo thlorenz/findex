@@ -74,9 +74,21 @@ function locateNindex (indexes, js, fullPath, ranges, locs, areDecs) {
  * @return {Object} the updated indexes
  */
 var go = module.exports = function (js, fullPath, indexes) {
+  // remove hashbang
+  js = js.replace(/^\#\!.+/, '');
+
   fullPath = fullPath || 'source.js';
   indexes = indexes || {};
-  var ast = esprima.parse(js, { range: true, loc: true });
+  if (!indexes.find) indexes.find = find.bind(indexes);
+
+  var ast;
+  try {
+    ast = esprima.parse(js, { range: true, loc: true });
+  } catch (e) {
+    // if esprima cannot parse the code, we are hosed
+    indexes.error = { error: e, file: fullPath };
+    return indexes;
+  }
 
   var decRanges = select.match('.type:val("FunctionDeclaration") ~ .range', ast);
   var decLocs = select.match('.type:val("FunctionDeclaration") ~ .loc', ast);
@@ -87,17 +99,5 @@ var go = module.exports = function (js, fullPath, indexes) {
   locateNindex(indexes, js, fullPath, decRanges, decLocs, true);
   locateNindex(indexes, js, fullPath, expRanges, expLocs, false);
 
-  if (!indexes.find) indexes.find = find.bind(indexes);
   return indexes;
 };
-
-// Test
-/*if (!module.parent && !process.browser) {
-  var fs = require('fs');
-  var fullPath = __dirname + '/test/fixtures/one-root-dec.js';
-  var js = fs.readFileSync(fullPath, 'utf8');
-  var fn = require(fullPath);
-
-  var indexes = go(js, fullPath);
-  console.log(indexes[getHash(fn.toString())]);
-}*/

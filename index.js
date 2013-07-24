@@ -34,12 +34,23 @@ var go = module.exports = function (opts, cb) {
   function ondata (entry) {
     fs.readFile(entry.fullPath, 'utf8', function (err, js) {
       if (err) return cb(err);
+
       file(js, entry.fullPath, indexes);
+      if (opts.debug) {
+        process.stdout.write('.');
+        if (indexes.error) {
+          console.error('\nUnable to parse: ', indexes.error.file);
+          console.error(indexes.error.error);
+          delete indexes.error;
+        }
+      }
+
       this.queue(null);
     }.bind(this));
   }
 
   function onend () {
+    if (opts.debug) process.stdout.write('\n');
     cb(null, indexes);
     this.queue(null);
   }
