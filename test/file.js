@@ -67,8 +67,26 @@ test('\nindexing file with mixed declarations and expressions, including a one l
 
   t.ok(index.find(mod.foo));
   t.ok(index.find(mod.bar));
+
   t.ok(index.find(mod.foobar));
   t.ok(index.find(mod.hex));
+
+  t.notOk(index.find(test));
+
+  t.end()
+})
+
+test('\nindexing file with functions that have different spacings', function (t) {
+  var src = fs.readFileSync(__dirname + '/fixtures/different-spacings.js', 'utf8');
+  var mod = require('./fixtures/different-spacings');
+
+  var index = indexFile(src);
+
+  t.ok(index.find(mod.foo));
+  t.ok(index.find(mod.hex));
+
+  // TODO: make this work in non-v8 envs
+  // t.ok(index.find(mod.bar));
 
   t.notOk(index.find(test));
 

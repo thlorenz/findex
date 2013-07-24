@@ -5,6 +5,9 @@ var select = require('JSONSelect');
 var getHash = require('./get-hash');
 var find = require('./find');
 
+// cheap way of detecting that we aren't running node and not in chrome either
+var v8 = !(typeof navigator !== 'undefined' && navigator.userAgent && !~navigator.userAgent.indexOf('Chrome'));
+
 function index(indexes, source, fullPath, loc, range) {
   var hash  =  getHash(source);
   var locS  =  loc.start;
@@ -33,6 +36,16 @@ function rewriteExp (fn) {
     : fn.replace(/function[^\(]*\(/, 'function (');
 }
 
+function rewriteNotV8 (fn) {
+  return v8
+    ? fn
+    : fn.replace(/\) *?\{/,') {')                                       // function ()   {    => function () {
+    ;
+
+    // TODO: breaks more than it fixes at this point
+    // .replace(/^function([^\(]+?)\( *(.*?) *\)/, 'function $1 ($2)')   // function ( a ) {   => function (a) {
+}
+
 function locateNindex (indexes, js, fullPath, ranges, locs, areDecs) {
   ranges.forEach(function (range, idx) {
     var start =  range[0];
@@ -44,6 +57,8 @@ function locateNindex (indexes, js, fullPath, ranges, locs, areDecs) {
 
     var fn = js.slice(start, end);
     var source = areDecs ? rewriteDec(fn) : rewriteExp(fn);
+    source = rewriteNotV8(source);
+
     index(indexes, source, fullPath, loc, range);
   });
 }
