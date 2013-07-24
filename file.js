@@ -63,10 +63,10 @@ var go = module.exports = function (js, fullPath, indexes) {
   indexes = indexes || {};
   var ast = esprima.parse(js, { range: true, loc: true });
 
-  var decRanges = select.match('.type:val("FunctionDeclaration") ~ .range', ast)
-  var decLocs = select.match('.type:val("FunctionDeclaration") ~ .loc', ast)
+  var decRanges = select.match('.type:val("FunctionDeclaration") ~ .range', ast);
+  var decLocs = select.match('.type:val("FunctionDeclaration") ~ .loc', ast);
 
-  var expRanges = select.match('.type:val("FunctionExpression") ~ .range', ast)
+  var expRanges = select.match('.type:val("FunctionExpression") ~ .range', ast);
   var expLocs = select.match('.type:val("FunctionExpression") ~ .loc', ast);
 
   locateNindex(indexes, js, fullPath, decRanges, decLocs, true);
@@ -77,7 +77,7 @@ var go = module.exports = function (js, fullPath, indexes) {
 };
 
 // Test
-if (!module.parent) {
+/*if (!module.parent && !process.browser) {
   var fs = require('fs');
   var fullPath = __dirname + '/test/fixtures/one-root-dec.js';
   var js = fs.readFileSync(fullPath, 'utf8');
@@ -85,4 +85,4 @@ if (!module.parent) {
 
   var indexes = go(js, fullPath);
   console.log(indexes[getHash(fn.toString())]);
-}
+}*/
