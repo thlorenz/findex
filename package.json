@@ -8,7 +8,8 @@
     "test-0.8": "nave use 0.8 npm run test-main",
     "test-0.10": "nave use 0.10 npm run test-main",
     "test-all": "npm run test-main && npm run test-0.8 && npm run test-0.10 && npm run tape",
-    "test": "if [ -e $TRAVIS ]; then npm run test-all; else npm run test-main && xvfb-run ./node_modules/.bin/testling; fi",
+    "test": "if [ -e $TRAVIS ]; then npm run test-all; else npm run test-main; fi",
+    "test-xvfb": "xvfb-run ./node_modules/.bin/testling",
     "tape-dev": "nodemon ./test/browser/dev-server.js",
     "tape": "testling -x open"
   },
@@ -55,17 +56,9 @@
   "testling": {
     "files": "test/*.js",
     "browsers": [
-      "ie/8..latest",
-      "firefox/17..latest",
-      "firefox/nightly",
       "chrome/22..latest",
       "chrome/canary",
-      "opera/12..latest",
-      "opera/next",
-      "safari/5.1..latest",
-      "ipad/6.0..latest",
-      "iphone/6.0..latest",
-      "android-browser/4.2..latest"
+      "safari/6.0..latest"
     ]
   }
 }
