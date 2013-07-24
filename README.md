@@ -1,5 +1,6 @@
-# findex
-[![build status](https://secure.travis-ci.org/thlorenz/findex.png)](http://travis-ci.org/thlorenz/findex)
+# findex [![build status](https://secure.travis-ci.org/thlorenz/findex.png)](http://travis-ci.org/thlorenz/findex)
+
+[![testling badge](https://ci.testling.com/thlorenz/findex.png)](https://ci.testling.com/thlorenz/findex)
 
 Indexes locations of functions inside a project by the checksum of the function string to find them later.
 
