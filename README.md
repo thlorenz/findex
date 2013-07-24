@@ -29,9 +29,7 @@ findex(function (err, index) {
 
 ## Status
 
-Alpha - most functionality is there, none tested yet.
-
-Also API docs are coming.
+API docs are coming.
 
 ## Installation
 
