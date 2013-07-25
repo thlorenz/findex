@@ -5,12 +5,13 @@
 Indexes locations of functions inside a project by the md5 hash of the function string to find them later.
 
 ```js
-'use strict';
 var findex = require('findex');
 
 function functionToFind() {
-  console.log('as you can see I am on lines 4 - 6 in indexNFind.js');
+  console.log('as you can see I am on lines 3 - 5 in indexNFind.js');
 }
+
+functionToFind();
 
 findex(function (err, index) {
   if (err) return console.error(err);
@@ -20,10 +21,10 @@ findex(function (err, index) {
 
 ```
 [ { file: '/Users/thlorenz/dev/js/projects/findex/example/indexNfind.js',
-    start: { line: 4, column: 0 },
-    end: { line: 6, column: 1 },
+    start: { line: 3, column: 0 },
+    end: { line: 5, column: 1 },
     lines: 2,
-    range: [ 43, 142 ] } ]
+    range: [ 29, 128 ] } ]
 ```
 
 ## Installation
@@ -48,7 +49,6 @@ findex(function (err, index) {
  */
 ```
 
-
 ###*findex.file(js, fullPath, indexes)*
 
 ```
@@ -63,6 +63,12 @@ findex(function (err, index) {
  * @return {Object} the updated indexes which will have an `error` property if one occurred
  */
 ```
+
+###*indexes.find*
+
+When the indexes get updated, either via ***findex()*** or ***findex.file***, a `find` method is added to them. Call
+them with either a `Function` or the result of `Function.toString()` to have it return the location of that function or
+`null` if it wasn't indexed.
 
 
 ## License

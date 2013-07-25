@@ -1,8 +1,7 @@
-'use strict';
 var findex = require('..');
 
 function functionToFind() {
-  console.log('as you can see I am on lines 4 - 6 in indexNFind.js');
+  console.log('as you can see I am on lines 3 - 5 in indexNFind.js');
 }
 
 functionToFind();
