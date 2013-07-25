@@ -105,7 +105,7 @@ function locateNindex (indexes, js, fullPath, ranges, locs, areDecs) {
  * @param js {String} the JavaScript file content
  * @param fullPath {String} full path at which the file can be found (optional, defaults to 'source.js')
  * @param indexes {Object} indexes that have been collected so far (optional, defaults to {})
- * @return {Object} the updated indexes
+ * @return {Object} the updated indexes which will have an `error` property if one occurred
  */
 var go = module.exports = function (js, fullPath, indexes) {
   // remove hashbang
