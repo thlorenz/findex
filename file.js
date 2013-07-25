@@ -86,8 +86,6 @@ function locateNindex (indexes, js, fullPath, ranges, locs, areDecs) {
       fn = eval('(function () { return ' + fnsrc + '})();');
       source = fn.toString();
     } catch (e) {
-      console.error('error', e);
-
       // best way blew up? ahw .. try second best :P ...
       source = areDecs ? rewriteDec(fnsrc) : rewriteExp(fnsrc);
       source = rewriteNotV8(source);
