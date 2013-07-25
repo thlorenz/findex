@@ -58,15 +58,3 @@ var go = module.exports = function (opts, cb) {
   readdirp(opts).pipe(through(ondata, onend));
 };
 go.file = file;
-
-function inspect(obj, depth) {
-  console.log(require('util').inspect(obj, false, depth || 5, true));
-}
-
-// Test
-if (!module.parent) {
-  go(function (err, index) {
-    if (err) return console.error(err);
-    console.log(index.find(file));
-  });
-}
