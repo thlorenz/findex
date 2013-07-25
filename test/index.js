@@ -15,7 +15,9 @@ var test_ = !debug ? function () {} : require('tape')
 var findex = require('..')
 var esprima = require('esprima')
 var select = require('JSONSelect')
-var ecstatic = require('ecstatic')
+// browserify blows up during require due to illegal return
+var ecstaticName = 'ecstatic';
+var ecstatic = require(ecstaticName)
 
 test('\nwhen indexing esprima', function (t) {
   t.plan(4)

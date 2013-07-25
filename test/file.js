@@ -108,14 +108,19 @@ test('\nindexing function expression that returns an anonymous function', functi
   t.end();
 })
 
-test('\nindexing file with return statement considered illegal by esprima', function (t) {
+// that file breaks browserify since it has an illegal return statement ;)
+if (typeof navigator === 'undefined') {
+  test('\nindexing file with return statement considered illegal by esprima', function (t) {
 
-  var src = fs.readFileSync(__dirname + '/fixtures/source-has-illegal-return.js', 'utf8');
-  var mod = require('./fixtures/source-has-illegal-return');
+    var filename = __dirname + '/fixtures/source-has-illegal-return.js';
+    // made async to stop brfs from trying to source it
+    fs.readFile(filename, 'utf8', function (err, src) {
+      var mod = require(filename);
+      var index = indexFile(src);
 
-  var index = indexFile(src);
+      t.ok(index.find(mod))
 
-  t.ok(index.find(mod))
-
-  t.end();
-})
+      t.end();
+    });
+  })
+}
