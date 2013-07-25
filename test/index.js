@@ -1,10 +1,17 @@
 'use strict';
 /*jshint asi: true */
 
+function inspect(obj, depth) {
+  console.log(require('util').inspect(obj, false, depth || 5, true));
+}
+
 // don't run in browser
 if (typeof navigator === 'undefined') {
 
-var test = require('tape')
+var debug// = true;
+var test =   debug ? function () {} : require('tape')
+var test_ = !debug ? function () {} : require('tape')
+
 var findex = require('..')
 var esprima = require('esprima')
 var select = require('JSONSelect')
@@ -37,6 +44,19 @@ test('\nwhen indexing JSONSelect', function (t) {
   });
 })
 
+// TODO:
+test_('\nwhen indexing ecstatic', function (t) {
+  findex({ root: __dirname + '/../node_modules/ecstatic', debug: true }, function (err, index) {
+    t.notOk(err, 'no error')
+
+    inspect(index);
+    t.ok(index.find(ecstatic), 'finds ecstatic')
+    t.ok(index.find(ecstatic.showDir), 'finds ecstatic.showDir')
+    t.end()
+
+  });
+})
+
 test('\nwhen indexing everything, except some huge modules', function (t) {
   findex({
         root: __dirname + '/../'
@@ -52,9 +72,6 @@ test('\nwhen indexing everything, except some huge modules', function (t) {
         t.ok(index.find(select._lex), 'finds select._lex')
         t.ok(index.find(esprima.parse), 'finds esprima.parse')
 
-        // TODO:
-        /*t.ok(index.find(ecstatic), 'finds ecstatic')
-        t.ok(index.find(ecstatic.showDir), 'finds ecstatic.showDir')*/
         t.ok(index.find(test), 'finds this test')
 
         t.end()
