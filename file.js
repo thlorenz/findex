@@ -10,6 +10,8 @@ var v8 = !(typeof navigator !== 'undefined' && navigator.userAgent && !~navigato
 
 function index(indexes, source, fullPath, loc, range) {
   var hash  =  getHash(source);
+  hash  =  source;
+
   var locS  =  loc.start;
   var locE  =  loc.end;
 
@@ -96,8 +98,34 @@ var go = module.exports = function (js, fullPath, indexes) {
   var expRanges = select.match('.type:val("FunctionExpression") ~ .range', ast);
   var expLocs = select.match('.type:val("FunctionExpression") ~ .loc', ast);
 
-  locateNindex(indexes, js, fullPath, decRanges, decLocs, true);
+//  locateNindex(indexes, js, fullPath, decRanges, decLocs, true);
   locateNindex(indexes, js, fullPath, expRanges, expLocs, false);
 
   return indexes;
 };
+
+// Test
+if (!module.parent) {
+  /*var cardinal = require('cardinal');
+  var fs = require('fs');
+  var index = go(fs.readFileSync(__dirname + '/test/fixtures/one-root-exp-returning-anonymous-fn.js', 'utf8'));
+  var mod = require('./test/fixtures/one-root-exp-returning-anonymous-fn');
+
+  console.log('++++++++++++++++++');
+  Object.keys(index)
+    .filter(function (k) { return k !== 'find'; })
+    .forEach(function (k) {
+      console.log(k + '\n\n');
+    });
+
+  console.log('=================');
+
+//  console.log(mod.toString());
+  console.log(mod().toString());*/
+
+
+ var fns = 'function foo () { console.log(1); }';
+ var fn = eval('(function () { return ' + fns + '})();');
+
+ console.log(fn.toString());
+}
