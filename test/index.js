@@ -8,6 +8,9 @@ function inspect(obj, depth) {
 // don't run in browser
 if (typeof navigator === 'undefined') {
 
+// override tap timeout to fix tests on travis
+process.env.TAP_TIMEOUT = 120;
+
 var debug// = true;
 var test =   debug ? function () {} : require('tape')
 var test_ = !debug ? function () {} : require('tape')

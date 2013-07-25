@@ -27,8 +27,6 @@ function fixSourceNparseAgain (js, error) {
 
 function index(indexes, source, fullPath, loc, range) {
   var hash  =  getHash(source);
-//  hash  =  source;
-
   var locS  =  loc.start;
   var locE  =  loc.end;
 
@@ -76,19 +74,22 @@ function locateNindex (indexes, js, fullPath, ranges, locs, areDecs) {
     var locE  =  loc.end;
 
     var source;
-    var fnString = js.slice(start, end);
+    var fnsrc = js.slice(start, end);
     var fn;
 
     try {
-      // this gets more consistent results, but may blow up at times
+      // Best way to normalize the function string:
+      // using the actual .toString() of the js interpreter
+      // (instead of our own attempts to normalize the string representation of the function)
+      // makes sure that functions that are .toString()ed later to compare will match 100% of the time
       /* jshint evil: true */
-      fn = eval('(function () { return ' + fnString + '})();');
+      fn = eval('(function () { return ' + fnsrc + '})();');
       source = fn.toString();
     } catch (e) {
       console.error('error', e);
 
-      // best way blew up? ahw .. try second best ;)
-      source = areDecs ? rewriteDec(fnString) : rewriteExp(fnString);
+      // best way blew up? ahw .. try second best :P ...
+      source = areDecs ? rewriteDec(fnsrc) : rewriteExp(fnsrc);
       source = rewriteNotV8(source);
     }
 
