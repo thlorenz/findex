@@ -95,7 +95,7 @@ test('\nindexing file with functions that have different spacings', function (t)
   t.end()
 })
 
-test('\nindexing anonymous function expression that returns an anonymous function', function (t) {
+test('\nindexing function expression that returns an anonymous function', function (t) {
 
   var src = fs.readFileSync(__dirname + '/fixtures/one-root-exp-returning-anonymous-fn.js', 'utf8');
   var mod = require('./fixtures/one-root-exp-returning-anonymous-fn');
@@ -103,6 +103,18 @@ test('\nindexing anonymous function expression that returns an anonymous functio
   var index = indexFile(src);
 
   t.ok(index.find(mod()))
+  t.ok(index.find(mod))
+
+  t.end();
+})
+
+test('\nindexing file with return statement considered illegal by esprima', function (t) {
+
+  var src = fs.readFileSync(__dirname + '/fixtures/source-has-illegal-return.js', 'utf8');
+  var mod = require('./fixtures/source-has-illegal-return');
+
+  var index = indexFile(src);
+
   t.ok(index.find(mod))
 
   t.end();

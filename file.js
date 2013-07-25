@@ -8,6 +8,23 @@ var find = require('./find');
 // cheap way of detecting that we aren't running node and not in chrome either
 var v8 = !(typeof navigator !== 'undefined' && navigator.userAgent && !~navigator.userAgent.indexOf('Chrome'));
 
+function fixSourceNparseAgain (js, error) {
+  // returns an ast if successfull or null if not
+
+  var illegalReturn = /^Line \d+: Illegal return statement$/.test(error.message);
+  if (illegalReturn) {
+    var lines = js.split('\n');
+    var idx = error.lineNumber - 1;
+
+    // comment out the line with the culprit
+    lines[idx] = '// ' + lines[idx];
+    try {
+      return esprima.parse(lines.join('\n'), { range: true, loc: true });
+    } catch (e) { return null; }
+  }
+  else return null;
+}
+
 function index(indexes, source, fullPath, loc, range) {
   var hash  =  getHash(source);
 //  hash  =  source;
@@ -101,9 +118,14 @@ var go = module.exports = function (js, fullPath, indexes) {
   try {
     ast = esprima.parse(js, { range: true, loc: true });
   } catch (e) {
-    // if esprima cannot parse the code, we are hosed
-    indexes.error = { error: e, file: fullPath };
-    return indexes;
+    // if esprima cannot parse the code, we are pretty muc hosed
+    ast = fixSourceNparseAgain(js, e);
+
+    // if fix attempt returned null that means there was nothing we can do here
+    if (ast === null) {
+      indexes.error = { error: e, file: fullPath };
+      return indexes;
+    }
   }
 
   var decRanges = select.match('.type:val("FunctionDeclaration") ~ .range', ast);
