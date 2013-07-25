@@ -2,10 +2,7 @@
 
 [![testling badge](https://ci.testling.com/thlorenz/findex.png)](https://ci.testling.com/thlorenz/findex)
 
-findex will work in pretty much all browsers except for some edge cases and is 100% consistent when run in a `v8`
-environment like nodejs or Chrome.
-
-Indexes locations of functions inside a project by the checksum of the function string to find them later.
+Indexes locations of functions inside a project by the md5 hash of the function string to find them later.
 
 ```js
 'use strict';

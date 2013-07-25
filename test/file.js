@@ -1,12 +1,12 @@
 'use strict';
 /*jshint asi: true */
 
-var debug =  true;
+var debug =  false;
 var test  =  debug  ? function () {} : require('tape')
 var test_ =  !debug ? function () {} : require('tape')
 
 var fs        =  require('fs');
-var indexFile =  require('..').file
+var indexFile =  require('../file');
 
 test('\nindexing file with one root declaration', function (t) {
   var src = fs.readFileSync(__dirname + '/fixtures/one-root-dec.js', 'utf8');
@@ -88,15 +88,14 @@ test('\nindexing file with functions that have different spacings', function (t)
   t.ok(index.find(mod.foo));
   t.ok(index.find(mod.hex));
 
-  // TODO: make this work in non-v8 envs
-  // t.ok(index.find(mod.bar));
+  t.ok(index.find(mod.bar));
 
   t.notOk(index.find(test));
 
   t.end()
 })
 
-test_('\nindexing anonymous function expression that returns an anonymous function', function (t) {
+test('\nindexing anonymous function expression that returns an anonymous function', function (t) {
 
   var src = fs.readFileSync(__dirname + '/fixtures/one-root-exp-returning-anonymous-fn.js', 'utf8');
   var mod = require('./fixtures/one-root-exp-returning-anonymous-fn');

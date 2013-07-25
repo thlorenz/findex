@@ -44,8 +44,7 @@ test('\nwhen indexing JSONSelect', function (t) {
   });
 })
 
-// TODO:
-test_('\nwhen indexing ecstatic', function (t) {
+test('\nwhen indexing ecstatic', function (t) {
   findex({ root: __dirname + '/../node_modules/ecstatic', debug: true }, function (err, index) {
     t.notOk(err, 'no error')
 
@@ -71,6 +70,8 @@ test('\nwhen indexing everything, except some huge modules', function (t) {
         t.ok(index.find(select._parse), 'finds select._parse')
         t.ok(index.find(select._lex), 'finds select._lex')
         t.ok(index.find(esprima.parse), 'finds esprima.parse')
+        t.ok(index.find(ecstatic), 'finds ecstatic')
+        t.ok(index.find(ecstatic.showDir), 'finds ecstatic.showDir')
 
         t.ok(index.find(test), 'finds this test')
 
