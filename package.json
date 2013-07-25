@@ -1,6 +1,6 @@
 {
   "name": "findex",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Indexes locations of functions inside a project by the md5 hash of the function string to find them later.",
   "main": "index.js",
   "browser": "browser.js",
@@ -36,7 +36,16 @@
     "nodemon": "~0.7.8",
     "testling": "~1.3.2"
   },
-  "keywords": [ "index", "find", "locate", "location", "function", "file", "line", "lineNumber" ],
+  "keywords": [
+    "index",
+    "find",
+    "locate",
+    "location",
+    "function",
+    "file",
+    "line",
+    "lineNumber"
+  ],
   "author": {
     "name": "Thorsten Lorenz",
     "email": "thlorenz@gmx.de",
