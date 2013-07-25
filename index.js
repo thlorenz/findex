@@ -55,6 +55,7 @@ var go = module.exports = function (opts, cb) {
     this.queue(null);
   }
 
+  // TODO: onend seems to happen before all files were indexed, and thus this calls back too soon
   readdirp(opts).pipe(through(ondata, onend));
 };
 go.file = file;
