@@ -5,8 +5,8 @@ function inspect(obj, depth) {
   console.log(require('util').inspect(obj, false, depth || 5, true));
 }
 
-// don't run in browser
-if (typeof navigator === 'undefined') {
+// don't run in browser or node 0.8
+if (typeof navigator === 'undefined' && parseFloat(process.versions.node) !== 0.8) {
 
 var debug// = true;
 var test =   debug ? function () {} : require('tape')
