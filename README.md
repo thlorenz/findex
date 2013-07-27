@@ -68,12 +68,13 @@ findex(function (err, index) {
 
 ###*findex.fork(opts, cb)*
 
-Same as findex, except that it forks a child process to do the work (AST creation can take time).
+Same as findex, except that it forks a child process to do the work - AST creation can be slow.
 
 Use this findex alternative if you evaluate lots of files (in larger projects)
-and the AST parsing is blocking your main process too much.
+and the AST creation is blocking your main process for too long.
 
-The arguments it expects are exactly the same as ***findex(opts, cb)*** does.
+The arguments it expects are exactly the same as [***findex(opts,
+cb)***](https://github.com/thlorenz/findex#findexopts-cb) does.
 
 ###*indexes.find*
 
