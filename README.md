@@ -41,10 +41,12 @@ findex(function (err, index) {
  *
  * @name exports
  * @function
- * @param opts {Object} passed to readdirp after setting the following defaults if they weren't supplied:
+ * @param opts {Object} Options, most of which are passed to readdirp after setting the following defaults if they weren't supplied:
  *    root: working directory
  *    fileFilter: '*.js'
  *    directoryFilter: [ '!.git', '!.svn', '!node_modules' ]
+ *  Options not passed to readdirp:
+ *    indexes: previously gathered indexes to which extra ones should be added, defaults to {}
  * @param cb {Function} called back with the function locations indexed by the md5 hash of the Function.toString() values
  */
 ```
