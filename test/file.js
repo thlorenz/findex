@@ -108,6 +108,38 @@ test('\nindexing function expression that returns an anonymous function', functi
   t.end();
 })
 
+test('\nindexing file with one root expression twice with same file and location', function (t) {
+  var src = fs.readFileSync(__dirname + '/fixtures/one-root-exp.js', 'utf8');
+  var foo = require('./fixtures/one-root-exp');
+
+  var index = indexFile(src, 'uno.js');
+
+  t.equal(index.find(foo).length, 1, 'has one function indexed after first time');
+
+  index = indexFile(src, 'uno.js', index);
+  t.equal(index.find(foo).length, 1, 'has one function indexed after second time');
+
+  t.end();
+})
+
+test('\nindexing file with one root expression twice with different file, same location', function (t) {
+  var src = fs.readFileSync(__dirname + '/fixtures/one-root-exp.js', 'utf8');
+  var foo = require('./fixtures/one-root-exp');
+
+  var index = indexFile(src, 'uno.js');
+
+  t.equal(index.find(foo).length, 1, 'has one function indexed after first time')
+
+  index = indexFile(src, 'dos.js', index);
+
+  var locs = index.find(foo);
+  t.equal(locs.length, 2, 'has two functions indexed after second time')
+  t.equal(locs[0].file, 'uno.js', 'first location is for first file')
+  t.equal(locs[1].file, 'dos.js', 'second location is for second file')
+
+  t.end();
+})
+
 // that file breaks browserify since it has an illegal return statement ;)
 if (typeof navigator === 'undefined') {
   test('\nindexing file with return statement considered illegal by esprima', function (t) {

@@ -25,6 +25,14 @@ function fixSourceNparseAgain (js, error) {
   else return null;
 }
 
+function entryIndexedBefore (entries, entry) {
+  return entries.some(function (e) {
+      return e.file === entry.file
+        && e.range[0] === entry.range[0]
+        && e.range[1] === entry.range[1];
+    });
+}
+
 function index(indexes, source, fullPath, loc, range) {
   var hash  =  getHash(source);
   var locS  =  loc.start;
@@ -32,13 +40,17 @@ function index(indexes, source, fullPath, loc, range) {
 
   // the exact same function could exist in multiple files, so we have to store all locations
   if (!indexes[hash]) indexes[hash] = [];
-  indexes[hash].push({
+
+  var entry = {
       file  :  fullPath
     , start :  locS
     , end   :  locE
     , lines :  locE.line - locS.line
     , range :  range
-  });
+  };
+  var entries = indexes[hash];
+
+  if (!entryIndexedBefore(entries, entry)) entries.push(entry);
 }
 
 function rewriteDec (fn) {
