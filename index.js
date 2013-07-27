@@ -61,3 +61,4 @@ var go = module.exports = function (opts, cb) {
   readdirp(opts).pipe(through(ondata, onend));
 };
 go.file = file;
+go.fork = require('./lib/fork');
