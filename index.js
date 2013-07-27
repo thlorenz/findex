@@ -32,8 +32,10 @@ var go = module.exports = function (opts, cb) {
 
   var indexes = opts.indexes || {};
   if (!indexes.find) indexes.find = find.bind(indexes);
+  var processing = 0, streamEnded = false;
 
   function ondata (entry) {
+    processing++;
     fs.readFile(entry.fullPath, 'utf8', function (err, js) {
       if (err) return cb(err);
 
@@ -48,17 +50,19 @@ var go = module.exports = function (opts, cb) {
       }
 
       this.queue(null);
+      if (!--processing && streamEnded) cb(null, indexes);
     }.bind(this));
   }
 
   function onend () {
-    if (opts.debug) process.stdout.write('\n');
-    cb(null, indexes);
     this.queue(null);
+    streamEnded = true;
+    if (opts.debug) process.stdout.write('\n');
+    if (!processing) cb(null, indexes);
   }
 
-  // TODO: onend seems to happen before all files were indexed, and thus this calls back too soon
   readdirp(opts).pipe(through(ondata, onend));
 };
 go.file = file;
+go.find = find;
 go.fork = require('./lib/fork');

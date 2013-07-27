@@ -76,12 +76,27 @@ and the AST creation is blocking your main process for too long.
 The arguments it expects are exactly the same as [***findex(opts,
 cb)***](https://github.com/thlorenz/findex#findexopts-cb) does.
 
-###*indexes.find*
+###*indexes.find(fn)*
 
 When the indexes get updated, either via ***findex()*** or ***findex.file***, a `find` method is added to them. Call
 them with either a `Function` or the result of `Function.toString()` to have it return the location of that function or
 `null` if it wasn't indexed.
 
+###*findex.find(fn)*
+
+```
+/**
+ * find function that is attached to the indexes after they have been created.
+ * It is part of the API since sometimes it needs to be recreated manually,
+ * i.e. when a new indexes instance is created by extending one set of indexes with another one
+ *
+ * @name find
+ * @function
+ * @param this {Object} bind the indexes to this function, i.e.: var f = find.bind(indexes); f(fn);
+ * @param fn {Function} the function or Function.toString() representation of the function to find
+ * @return {[Object]} locations information about the function, including file, line, column and range
+ */
+ ```
 
 ## License
 
