@@ -6,7 +6,7 @@ var test  =  debug  ? function () {} : require('tape')
 var test_ =  !debug ? function () {} : require('tape')
 
 var fs        =  require('fs');
-var indexFile =  require('../file');
+var indexFile =  require('../lib/file');
 
 test('\nindexing file with one root declaration', function (t) {
   var src = fs.readFileSync(__dirname + '/fixtures/one-root-dec.js', 'utf8');

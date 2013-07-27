@@ -3,8 +3,8 @@
 var fs = require('fs');
 var readdirp = require('readdirp');
 var through = require('through');
-var file = require('./file');
-var find = require('./find');
+var file = require('./lib/file');
+var find = require('./lib/find');
 
 /**
  * Indexes all functions found in all files found in all directories and subdirectories of the given root or the working directory.
