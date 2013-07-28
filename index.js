@@ -1,8 +1,9 @@
 'use strict';
 
-var fs = require('fs');
-var readdirp = require('readdirp');
-var through = require('through');
+var fs           =  require('fs');
+var readdirp     =  require('readdirp');
+var uniqueConcat =  require('unique-concat');
+
 var file = require('./lib/file');
 var find = require('./lib/find');
 
@@ -32,12 +33,19 @@ var go = module.exports = function (opts, cb) {
 
   var indexes = opts.indexes || {};
   if (!indexes.find) indexes.find = find.bind(indexes);
+
   var processing = 0, streamEnded = false;
 
   function ondata (entry) {
     processing++;
     fs.readFile(entry.fullPath, 'utf8', function (err, js) {
-      if (err) return cb(err);
+
+      if (err) {
+        // we may have tried to read a file that the user is not allowed to read -- nothing we can do
+        if (opts.debug) console.error(err);
+        if (!--processing && streamEnded) cb(null, indexes);
+        return;
+      }
 
       file(js, entry.fullPath, indexes);
       if (opts.debug) {
@@ -49,20 +57,23 @@ var go = module.exports = function (opts, cb) {
         }
       }
 
-      this.queue(null);
+     // this.queue(null);
       if (!--processing && streamEnded) cb(null, indexes);
     }.bind(this));
   }
 
-  function onend () {
-    this.queue(null);
+  function onend (err, entries) {
+    var dirs = entries.directories.map(function (d) { return d.fullPath; });
+    indexes.indexedDirs = uniqueConcat(indexes.indexedDirs || [], dirs);
+
     streamEnded = true;
     if (opts.debug) process.stdout.write('\n');
     if (!processing) cb(null, indexes);
   }
 
-  readdirp(opts).pipe(through(ondata, onend));
+  readdirp(opts, ondata, onend);
 };
+
 go.file = file;
 go.find = find;
 go.fork = require('./lib/fork');

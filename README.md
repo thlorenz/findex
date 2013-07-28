@@ -82,6 +82,15 @@ When the indexes get updated, either via ***findex()*** or ***findex.file***, a 
 them with either a `Function` or the result of `Function.toString()` to have it return the location of that function or
 `null` if it wasn't indexed.
 
+###*indexes.indexedDirs*
+
+This is only relevant when indexing a project (i.e. a directory and its subdirectories) and are useful in case you want
+to add them to the `directoryFilter` for the next indexing operation to avoid indexing the same directory twice.
+
+
+- it will contain an array of unique directories that were examined to create the indexes 
+- if indexes that are passed to it already have `indexedDirs`, they will be concatenated with the ones examined
+
 ###*findex.find(fn)*
 
 ```
