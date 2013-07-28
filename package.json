@@ -1,6 +1,6 @@
 {
   "name": "findex",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Indexes locations of functions inside a project by the md5 hash of the function string to find them later.",
   "main": "index.js",
   "browser": "browser.js",
