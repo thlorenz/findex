@@ -64,13 +64,13 @@ test('\nwhen indexing esprima followed by ecstatic, propagating indexes', functi
     t.notOk(err, 'no error')
 
     t.ok(index.find(esprima.parse), 'finds esprima.parse')
-    t.equal(index.indexedDirs.length, 3, 'has 3 indexed esprima project dirs')
+    t.equal(index.indexedDirs.length, 2, 'has 2 indexed esprima project dirs')
 
 
     findex({ root: __dirname + '/../node_modules/ecstatic', debug: true, indexes: index }, function (err, index) {
       t.notOk(err, 'no error')
 
-      t.equal(index.indexedDirs.length, 3 + 10, 'has 3 indexed esprima and 10 indexed ecstatic project dirs')
+      t.equal(index.indexedDirs.length, 2 + 6, 'has 2 indexed esprima and 6 indexed ecstatic project dirs')
       t.ok(index.find(ecstatic), 'finds ecstatic')
       t.ok(index.find(ecstatic.showDir), 'finds ecstatic.showDir')
     });
