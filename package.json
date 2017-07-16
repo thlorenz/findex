@@ -51,10 +51,7 @@
     "email": "thlorenz@gmx.de",
     "url": "http://thlorenz.com"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/thlorenz/findex/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "engine": {
     "node": ">=0.6"
   },
