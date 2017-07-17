@@ -33,7 +33,7 @@ findex(function (err, index) {
 
 ## API
 
-###*findex(opts, cb)*
+### *findex(opts, cb)*
 
 ```
 /**
@@ -51,7 +51,7 @@ findex(function (err, index) {
  */
 ```
 
-###*findex.file(js, fullPath, indexes)*
+### *findex.file(js, fullPath, indexes)*
 
 ```
 /**
@@ -66,23 +66,23 @@ findex(function (err, index) {
  */
 ```
 
-###*findex.fork(opts, cb)*
+### *findex.fork(opts, cb)*
 
 Same as findex, except that it forks a child process to do the work - AST creation can be slow.
 
 Use this findex alternative if you evaluate lots of files (in larger projects)
 and the AST creation is blocking your main process for too long.
 
-The arguments it expects are exactly the same as [***findex(opts,
-cb)***](https://github.com/thlorenz/findex#findexopts-cb) does.
+The arguments it expects are exactly the same as ***[findex(opts,
+cb)](https://github.com/thlorenz/findex#findexopts-cb)*** does.
 
-###*indexes.find(fn)*
+### *indexes.find(fn)*
 
 When the indexes get updated, either via ***findex()*** or ***findex.file***, a `find` method is added to them. Call
 them with either a `Function` or the result of `Function.toString()` to have it return the location of that function or
 `null` if it wasn't indexed.
 
-###*indexes.indexedDirs*
+### *indexes.indexedDirs*
 
 This is only relevant when indexing a project (i.e. a directory and its subdirectories) and are useful in case you want
 to add them to the `directoryFilter` for the next indexing operation to avoid indexing the same directory twice.
@@ -91,7 +91,7 @@ to add them to the `directoryFilter` for the next indexing operation to avoid in
 - it will contain an array of unique directories that were examined to create the indexes 
 - if indexes that are passed to it already have `indexedDirs`, they will be concatenated with the ones examined
 
-###*findex.find(fn)*
+### *findex.find(fn)*
 
 ```
 /**
